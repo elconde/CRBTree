@@ -1,8 +1,10 @@
 class node {
-    public:
-        int parent;
-        node();
-        // node* grandparent(node* n);
 
+    public:
+        enum Color { RED, BLACK };
+        node* parent;
+        node(Color c );
+        void grandparent(node* n);
+        Color getColor();
 };
 

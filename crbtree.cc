@@ -1,14 +1,16 @@
+#include <iostream>
 #include "crbtree.h"
 
-node::node () {
-    parent = 0;
+using namespace std;
+
+void node::grandparent( node* result) {
+    if ( result->parent != 0 ) {
+        result = result->parent->parent; 
+    }
 }
 
-// node::grandparent( node& result) {
-//     if ( n->parent != 0 ) {
-//         result = n->parent->parent; 
-//     }
-// }
 int main() {
-    return 0;
+    node myNode = new node(RED);
+    cout<<"parent=" << myNode.parent << endl;
+    cout << "hello" << endl;
 }
