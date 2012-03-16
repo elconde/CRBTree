@@ -1,16 +1,25 @@
 #include <iostream>
-#include "crbtree.h"
-
 using namespace std;
 
-void node::grandparent( node* result) {
-    if ( result->parent != 0 ) {
-        result = result->parent->parent; 
-    }
+
+class node {
+    public:
+        int getColor();
+};
+
+enum COLOR { RED, BLACK };
+
+int node::getColor() {
+    return BLACK;
 }
 
 int main() {
-    node myNode = new node(RED);
-    cout<<"parent=" << myNode.parent << endl;
-    cout << "hello" << endl;
+    node myNode;
+    //printf("myNode.getColor()=%s\n",myNode.getColor());
+    if ( myNode.getColor() == BLACK) {
+        printf("BLACK\n"); 
+    } else if (myNode.getColor() == RED) {
+        printf("RED\n");
+    }
+    return 0;
 }
