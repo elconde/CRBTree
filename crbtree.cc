@@ -19,6 +19,9 @@ int node::getValue() {
 }
 
 void node::attach(node* anotherNode) {
+    if ( color == NONE ) {
+        throw "Set the node's color before attaching.";
+    }
     parent = anotherNode;
     if ( value < parent->value ) {
         parent->left = this;
@@ -46,7 +49,14 @@ node* node::getRight() {
 int main() {
     node node01(20120319);
     node node02(20120318);
-    node02.attach(&node01);
+    try {
+        node02.setColor(BLACK);
+        node02.attach(&node01);
+    }
+    catch ( const char* message) {
+        cout << "ERROR: " << message << endl;
+        return 1;
+    }
 
     printf("Node 01 LEFT: %d\n",node01.getLeft()->getValue());
 
