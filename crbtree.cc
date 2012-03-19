@@ -45,42 +45,59 @@ node* node::uncle() {
 
 void node::setLeft(node* n) {
     left = n;
+    n->parent = this;
     return;
 }
 
 void node::setRight(node* n) {
     right = n;
+    n->parent = this;
     return;
 }
 
-void insert(node* n, node* root=0) {
-    if ( root == 0 ) {
-        n->setColor(BLACK);
-        return; 
-    }
-    int nValue = n->getValue();
-    int rValue = root->getValue();
-    if ( nValue < rValue) {
-        node* left = root->getLeft();
-        if ( left == 0 ) { 
-            root->setLeft(n); 
-            n->setColor(RED);
-            return;
-        }
-        insert(n, left); 
-    }
-    else if ( nValue > rValue) {
-        node* right = root->getRight();
-        if ( right == 0 ) { 
-            root->setRight(n);
-            n->setColor(RED);
-            return;
-        }
-        insert(n, right); 
-    }
-
+void node::setParent(node* n) {
+    parent = n;
 }
 
+node* node::getParent() {
+    return parent;
+}
+
+void insert(node* n, node* root=0) {
+    if ( root != 0 ) {
+        int nValue = n->getValue();
+        int rValue = root->getValue();
+        if ( nValue < rValue) {
+            node* left = root->getLeft();
+            if ( left == 0 ) { 
+                root->setLeft(n); 
+            }
+            else { insert(n, left); } 
+        }
+        else if ( nValue > rValue) {
+            node* right = root->getRight();
+            if ( right == 0 ) { 
+                root->setRight(n);
+            }
+            else { insert(n, right); }
+        }
+    }
+    n->setColor(RED);
+    insert_case1(n);
+}
+
+void insert_case1(node* n) {
+    // If no parents then color it black
+    if ( n->getParent() == 0 ) {
+        n->setColor(BLACK);
+        return;
+    }
+    insert_case2(n);
+}
+
+void insert_case2(node* n) {
+    //Parent is black, all good.
+}
 const char* node::getColorString() {
     switch (color) {
         case RED:

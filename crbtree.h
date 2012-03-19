@@ -18,6 +18,11 @@ class node {
         void setLeft(node*);
         void setRight(node*);
         const char* getColorString();
+        node* getParent();
+        void setParent(node*);
 };
 
 void insert(node* n, node* root);
+void insert_case1(node* n);
+void insert_case2(node* n);
+
