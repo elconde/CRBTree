@@ -55,7 +55,7 @@ void node::setRight(node* n) {
 
 void insert(node* n, node* root=0) {
     if ( root == 0 ) {
-        n->setColor(RED);
+        n->setColor(BLACK);
         return; 
     }
     int nValue = n->getValue();
