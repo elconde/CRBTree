@@ -8,13 +8,16 @@ class node {
     node* right;
     public:
         COLOR getColor();
-        node(int);
+        node(int, COLOR);
         int getValue();
-        void attach(node*);
         node* grandparent();
+        node* uncle();
         void setColor(COLOR);
         node* getLeft();
         node* getRight();
+        void setLeft(node*);
+        void setRight(node*);
+        const char* getColorString();
 };
 
-
+void insert(node* n, node* root);

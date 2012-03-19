@@ -2,12 +2,12 @@
 #include "crbtree.h"
 using namespace std;
 
-node::node(int v) {
+node::node(int v, COLOR c=NONE) {
     value = v;
     parent = 0;
     left = 0;
     right = 0;
-    color = NONE;
+    color = c;
 }
 
 COLOR node::getColor() {
@@ -18,16 +18,6 @@ int node::getValue() {
     return value;
 }
 
-void node::attach(node* anotherNode) {
-    if ( color == NONE ) {
-        throw "Set the node's color before attaching.";
-    }
-    parent = anotherNode;
-    if ( value < parent->value ) {
-        parent->left = this;
-    }
-    else { parent->right = this; }
-}
 
 node* node::grandparent() {
     if (parent != 0 ) { return parent->parent; }
@@ -46,19 +36,87 @@ node* node::getRight() {
     return right;
 }
 
-int main() {
-    node node01(20120319);
-    node node02(20120318);
-    try {
-        node02.setColor(BLACK);
-        node02.attach(&node01);
+node* node::uncle() {
+    node* g = grandparent();
+    if ( g == 0 ) { return 0 ; }
+    if ( parent == g->getLeft() ) { return g->getRight();}
+    return g->getLeft();
+}
+
+void node::setLeft(node* n) {
+    left = n;
+    return;
+}
+
+void node::setRight(node* n) {
+    right = n;
+    return;
+}
+
+void insert(node* n, node* root=0) {
+    if ( root == 0 ) {
+        n->setColor(RED);
+        return; 
     }
-    catch ( const char* message) {
-        cout << "ERROR: " << message << endl;
-        return 1;
+    int nValue = n->getValue();
+    int rValue = root->getValue();
+    if ( nValue < rValue) {
+        node* left = root->getLeft();
+        if ( left == 0 ) { 
+            root->setLeft(n); 
+            n->setColor(RED);
+            return;
+        }
+        insert(n, left); 
+    }
+    else if ( nValue > rValue) {
+        node* right = root->getRight();
+        if ( right == 0 ) { 
+            root->setRight(n);
+            n->setColor(RED);
+            return;
+        }
+        insert(n, right); 
     }
 
-    printf("Node 01 LEFT: %d\n",node01.getLeft()->getValue());
+}
+
+const char* node::getColorString() {
+    switch (color) {
+        case RED:
+            return "RED";
+            break;
+        case BLACK:
+            return "BLACK";
+            break;
+        case NONE:
+            return "NONE";
+            break;
+        default:
+            return "WTF?";
+    }
+
+}
+
+int main() {
+    node root(51);
+    node node28(28);
+    node node83(83);
+    node node64(64);
+    node node90(90);
+    insert(&root);
+    insert(&node28,&root);
+    insert(&node83,&root);
+    insert(&node64,&root);
+    insert(&node90,&root);
+
+    printf("ROOT value: %d,%s\n", root.getValue(), root.getColorString());
+    printf("ROOT left: %d\n", root.getLeft()->getValue());
+    printf("ROOT right: %d\n", root.getRight()->getValue());
+    printf("83 left: %d\n", node83.getLeft()->getValue());
+    printf("83 right: %d\n", node83.getRight()->getValue());
+
 
     return 0;
 }
+
