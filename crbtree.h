@@ -21,7 +21,7 @@ class node {
         void setRight(node*);
         const char* getColorString();
         node* getParent();
-        void setParent(node*);
+
         bool operator==(const node&);
 };
 

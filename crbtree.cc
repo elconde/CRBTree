@@ -59,10 +59,6 @@ void node::setRight(node* n) {
     return;
 }
 
-void node::setParent(node* n) {
-    parent = n;
-}
-
 node* node::getParent() {
     return parent;
 }
