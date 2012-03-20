@@ -23,7 +23,7 @@ int node::getValue() {
 }
 
 
-node* node::grandparent() {
+node* node::getGrandparent() {
     if (parent != 0 ) { return parent->parent; }
     return 0;
 }
@@ -40,8 +40,8 @@ node* node::getRight() {
     return right;
 }
 
-node* node::uncle() {
-    node* g = grandparent();
+node* node::getUncle() {
+    node* g = getGrandparent();
     if ( g == 0 ) { return 0 ; }
     if ( parent == g->getLeft() ) { return g->getRight();}
     return g->getLeft();
@@ -117,9 +117,20 @@ void insert_case2(node* n) {
 
 void insert_case3(node* n) {
     // Parent and uncle are both red
-
-    
+    node* uncle = n->getUncle();
+    if ( ( uncle != 0 ) && ( uncle->getColor() == RED ) ) {
+        n->getParent()->setColor(BLACK);
+        uncle->setColor(BLACK);
+        node* grandparent = n->getGrandparent();
+        grandparent->setColor(RED);
+        insert_case1(grandparent);
+    }
+    else {
+        insert_case4(n);
+    }
 }
+
+void insert_case4(node* n) {}
 
 const char* node::getColorString() {
     switch (color) {
@@ -160,6 +171,22 @@ int main() {
     assert(node25.getRight() == &leaf);
     assert(root.getLeft() == &node25);
     assert(root.getRight() == &node100);
+
+    node node10(10);
+    insert(&node10, &root);
+    assert(node10.getColor() == RED);
+    assert(node10.getLeft() == &leaf);
+    assert(node10.getRight() == &leaf);
+    assert(node25.getColor() == BLACK);
+    assert(node25.getLeft() == &node10);
+    assert(node25.getRight() == &leaf);
+    assert(root.getColor() == BLACK);
+    assert(root.getLeft() == &node25);
+    assert(root.getRight() == &node100);
+    assert(node100.getColor() == BLACK);
+    assert(node100.getLeft() == &leaf);
+    assert(node100.getRight() == &leaf);
+
 
 
 

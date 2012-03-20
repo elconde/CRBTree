@@ -7,11 +7,13 @@ class node {
     node* left;
     node* right;
     public:
-        COLOR getColor();
+    //TODO: Better organize these
         node(int, COLOR);
+
+        COLOR getColor();
         int getValue();
-        node* grandparent();
-        node* uncle();
+        node* getGrandparent();
+        node* getUncle();
         void setColor(COLOR);
         node* getLeft();
         node* getRight();
@@ -30,4 +32,5 @@ void insert(node* n, node* root);
 void insert_case1(node* n);
 void insert_case2(node* n);
 void insert_case3(node* n);
+void insert_case4(node* n);
 
