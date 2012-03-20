@@ -39,4 +39,8 @@ void insert_case1(node* n);
 void insert_case2(node* n);
 void insert_case3(node* n);
 void insert_case4(node* n);
+void insert_case5(node* n);
+
+void rotate_left(node*);
+void rotate_right(node*);
 

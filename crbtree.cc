@@ -63,6 +63,16 @@ node* node::getParent() {
     return parent;
 }
 
+void rotate_left(node* p) {
+    node* g = p->getParent();
+    node* n = p->getRight();
+    g->setLeft(n);
+    p->setRight(n->getLeft());
+    n->setLeft(p);
+}
+
+void rotate_right(node* p) {}
+
 void insert(node* n, node* root=0) {
     if ( root != 0 ) {
         int nValue = n->getValue();
@@ -100,19 +110,22 @@ void insert_case1(node* n) {
         n->setColor(BLACK);
         return;
     }
+    // We have a parent
     insert_case2(n);
 }
 
 void insert_case2(node* n) {
-    //Parent is black, all good.
+    //If parent is black, all good.
     if (n->getParent()->getColor() == BLACK ) {
         return;
     }
+    // Parent is red
     insert_case3(n);
 }
 
 void insert_case3(node* n) {
-    // Parent and uncle are both red
+    // If uncle is red repaint it and parent black and apply case 1 to 
+    // grandparent
     node* uncle = n->getUncle();
     if ( ( uncle != 0 ) && ( uncle->getColor() == RED ) ) {
         n->getParent()->setColor(BLACK);
@@ -122,11 +135,40 @@ void insert_case3(node* n) {
         insert_case1(grandparent);
     }
     else {
+        // Parent is red and uncle is black
         insert_case4(n);
     }
 }
 
-void insert_case4(node* n) {}
+void insert_case4(node* n) {
+    // Current node is the right child of its parent, and the parent in turn
+    // is the left child of its parent.
+    // -or-
+    // Current node is the left child of its parent, and the parent in turn
+    // is the right child of its parent.
+    node* grandparent = n->getGrandparent();
+    node* parent = n->getParent();
+    if ((n == parent->getRight()) && (parent == grandparent->getLeft())) {
+    //     cout << "Rotating left." << endl;
+    //     cout << "n <" <<n<<"> value="<<n->getValue()<<endl;
+    //     cout << "parent <" <<parent<<"> value="<<parent->getValue()<<endl;
+    //     cout << "left <" << n->getLeft() << "> value="<<n->getLeft()->getValue()<<endl;
+        rotate_left(parent);
+        cout << "Done rotating." << endl;
+        cout << "n      <" <<n<<"> value="<<n->getValue()<<endl;
+        cout << "left   <" << n->getLeft() << "> value="<<n->getLeft()->getValue()<<endl;
+        //insert_case5(n->getLeft());
+    }
+    else if ((n == parent->getLeft()) && (parent == grandparent->getRight())) {
+        rotate_right(parent);
+        //insert_case5(n->getRight());
+    }
+    // Current node is left child and parent is left child.
+    // -or-
+    // Current node is right child and parent is right child.
+}
+
+void insert_case5(node* n) {}
 
 const char* node::getColorString() {
     switch (color) {
@@ -144,6 +186,8 @@ const char* node::getColorString() {
     }
 
 }
+
+
 
 int main() {
     node root(50);
@@ -183,6 +227,26 @@ int main() {
     assert(node100.getLeft() == &leaf);
     assert(node100.getRight() == &leaf);
 
+    node node18(18);
+    insert(&node18, &root);
+    // assert(node10.getColor() == RED);
+    // assert(node10.getLeft() == &leaf);
+    // assert(node10.getRight() == &leaf);
+    // assert(node25.getColor() == BLACK);
+    // assert(node25.getLeft() == &node18);
+    // assert(node25.getRight() == &leaf);
+    // assert(root.getColor() == BLACK);
+    // assert(root.getLeft() == &node25);
+    // assert(root.getRight() == &node100);
+    // assert(node100.getColor() == BLACK);
+    // assert(node100.getLeft() == &leaf);
+    // assert(node100.getRight() == &leaf);
+    cout << "About to assert" << endl;
+    cout << "n      <" <<&node18<<"> value="<<(&node18)->getValue()<<endl;
+    cout << "left   <" << (&node18)->getLeft() << "> value="<<(&node18)->getLeft()->getValue()<<endl;
+    assert(node18.getColor() == RED);
+    assert(node18.getLeft() == &node10);
+    assert(node18.getRight() == &leaf);
 
 
 
