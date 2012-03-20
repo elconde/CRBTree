@@ -11,15 +11,21 @@ class node {
         node(int, COLOR);
 
         COLOR getColor();
-        int getValue();
-        node* getGrandparent();
-        node* getUncle();
         void setColor(COLOR);
-        node* getLeft();
-        node* getRight();
-        void setLeft(node*);
-        void setRight(node*);
         const char* getColorString();
+
+        int getValue();
+
+        node* getGrandparent();
+
+        node* getUncle();
+
+        node* getLeft();
+        void setLeft(node*);
+
+        node* getRight();
+        void setRight(node*);
+
         node* getParent();
 
         bool operator==(const node&);
