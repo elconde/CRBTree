@@ -71,7 +71,13 @@ void rotate_left(node* p) {
     n->setLeft(p);
 }
 
-void rotate_right(node* p) {}
+void rotate_right(node* p) {
+    node* g = p->getParent();
+    node* n = p->getLeft();
+    g->setRight(n);
+    p->setLeft(n->getRight());
+    n->setRight(p);
+}
 
 void BTreeInsert(node* n, node* root) {
     if ( root != 0 ) {
@@ -156,18 +162,32 @@ void insert_case4(node* n) {
     node* parent = n->getParent();
     if ((n == parent->getRight()) && (parent == grandparent->getLeft())) {
         rotate_left(parent);
-        //insert_case5(n->getLeft());
+        n = n->getLeft();
     }
     else if ((n == parent->getLeft()) && (parent == grandparent->getRight())) {
         rotate_right(parent);
-        //insert_case5(n->getRight());
+        n = n->getRight();
     }
     // Current node is left child and parent is left child.
     // -or-
     // Current node is right child and parent is right child.
+    insert_case5(n);
 }
 
-void insert_case5(node* n) {}
+
+void insert_case5(node* n) {
+    node* grandparent = n->getGrandparent();
+    node* parent = n->getParent();
+    parent->setColor(BLACK);
+    grandparent->setColor(RED);
+    if (n == parent->getLeft()) {
+        rotate_right(grandparent);
+    }
+    else {
+        rotate_left(grandparent);
+    }
+
+}
 
 const char* node::getColorString() {
     switch (color) {
@@ -195,11 +215,11 @@ int main() {
     assert(root.getColor() == BLACK);
 
     node node100(100);
-    assert (node100.getColor() == NONE);
     insert(&node100,&root);
     assert(node100.getColor() == RED);
     assert(node100.getLeft() == &leaf);
     assert(node100.getRight() == &leaf);
+    assert(root.getColor() == BLACK);
     assert(root.getLeft() == &leaf);
     assert(root.getRight() == &node100);
 
@@ -208,6 +228,10 @@ int main() {
     assert(node25.getColor() == RED);
     assert(node25.getLeft() == &leaf);
     assert(node25.getRight() == &leaf);
+    assert(node100.getColor() == RED);
+    assert(node100.getLeft() == &leaf);
+    assert(node100.getRight() == &leaf);
+    assert(root.getColor() == BLACK);
     assert(root.getLeft() == &node25);
     assert(root.getRight() == &node100);
 
@@ -219,32 +243,31 @@ int main() {
     assert(node25.getColor() == BLACK);
     assert(node25.getLeft() == &node10);
     assert(node25.getRight() == &leaf);
-    assert(root.getColor() == BLACK);
-    assert(root.getLeft() == &node25);
-    assert(root.getRight() == &node100);
     assert(node100.getColor() == BLACK);
     assert(node100.getLeft() == &leaf);
     assert(node100.getRight() == &leaf);
+    assert(root.getColor() == BLACK);
+    assert(root.getLeft() == &node25);
+    assert(root.getRight() == &node100);
+
 
     node node18(18);
     insert(&node18, &root);
+    assert(node18.getColor() == BLACK);
+    assert(node18.getLeft() == &node10);
+    assert(node18.getRight() == &node25);
     assert(node10.getColor() == RED);
     assert(node10.getLeft() == &leaf);
     assert(node10.getRight() == &leaf);
-    assert(node25.getColor() == BLACK);
-    assert(node25.getLeft() == &node18);
+    assert(node25.getColor() == RED);
+    assert(node25.getLeft() == &leaf);
     assert(node25.getRight() == &leaf);
-    assert(root.getColor() == BLACK);
-    assert(root.getLeft() == &node25);
-    assert(root.getRight() == &node100);
     assert(node100.getColor() == BLACK);
     assert(node100.getLeft() == &leaf);
     assert(node100.getRight() == &leaf);
-    assert(node18.getColor() == RED);
-    assert(node18.getLeft() == &node10);
-    assert(node18.getRight() == &leaf);
-
-
+    assert(root.getColor() == BLACK);
+    assert(root.getLeft() == &node18);
+    assert(root.getRight() == &node100);
 
     return 0;
 }
