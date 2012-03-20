@@ -10,6 +10,10 @@ node::node(int v, COLOR c=NONE) {
     color = c;
 }
 
+bool node::operator==(const node &anotherNode) {
+    return anotherNode.value==value;
+}
+
 COLOR node::getColor() {
     return color;
 }
@@ -69,20 +73,28 @@ void insert(node* n, node* root=0) {
         int rValue = root->getValue();
         if ( nValue < rValue) {
             node* left = root->getLeft();
-            if ( left == 0 ) { 
+            if ( left == 0 || *left == leaf) { 
                 root->setLeft(n); 
             }
             else { insert(n, left); } 
         }
         else if ( nValue > rValue) {
             node* right = root->getRight();
-            if ( right == 0 ) { 
+            if ( right == 0 || *right == leaf) { 
                 root->setRight(n);
             }
             else { insert(n, right); }
         }
+        else {
+            // No duplicates allowed
+            return; 
+        }
     }
     n->setColor(RED);
+    // Add the black leaves
+    n->setRight(&leaf);
+    n->setLeft(&leaf);
+    // Now perform the Red-Black operations
     insert_case1(n);
 }
 
@@ -97,7 +109,18 @@ void insert_case1(node* n) {
 
 void insert_case2(node* n) {
     //Parent is black, all good.
+    if (n->getParent()->getColor() == BLACK ) {
+        return;
+    }
+    insert_case3(n);
 }
+
+void insert_case3(node* n) {
+    // Parent and uncle are both red
+
+    
+}
+
 const char* node::getColorString() {
     switch (color) {
         case RED:
@@ -116,22 +139,28 @@ const char* node::getColorString() {
 }
 
 int main() {
-    node root(51);
-    node node28(28);
-    node node83(83);
-    node node64(64);
-    node node90(90);
+    node root(50);
+    assert(root.getColor() == NONE);
     insert(&root);
-    insert(&node28,&root);
-    insert(&node83,&root);
-    insert(&node64,&root);
-    insert(&node90,&root);
+    assert(root.getColor() == BLACK);
 
-    printf("ROOT value: %d,%s\n", root.getValue(), root.getColorString());
-    printf("ROOT left: %d\n", root.getLeft()->getValue());
-    printf("ROOT right: %d\n", root.getRight()->getValue());
-    printf("83 left: %d\n", node83.getLeft()->getValue());
-    printf("83 right: %d\n", node83.getRight()->getValue());
+    node node100(100);
+    assert (node100.getColor() == NONE);
+    insert(&node100,&root);
+    assert(node100.getColor() == RED);
+    assert(node100.getLeft() == &leaf);
+    assert(node100.getRight() == &leaf);
+    assert(root.getLeft() == &leaf);
+    assert(root.getRight() == &node100);
+
+    node node25(25);
+    insert(&node25, &root);
+    assert(node25.getColor() == RED);
+    assert(node25.getLeft() == &leaf);
+    assert(node25.getRight() == &leaf);
+    assert(root.getLeft() == &node25);
+    assert(root.getRight() == &node100);
+
 
 
     return 0;

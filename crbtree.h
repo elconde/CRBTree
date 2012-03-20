@@ -20,9 +20,14 @@ class node {
         const char* getColorString();
         node* getParent();
         void setParent(node*);
+        bool operator==(const node&);
 };
 
+node leaf(0, BLACK);
+
+// http://en.wikipedia.org/w/index.php?title=Red%E2%80%93black_tree&oldid=482155076#Operations
 void insert(node* n, node* root);
 void insert_case1(node* n);
 void insert_case2(node* n);
+void insert_case3(node* n);
 
