@@ -74,6 +74,13 @@ void rotate_left(node* p) {
 void rotate_right(node* p) {}
 
 void insert(node* n, node* root=0) {
+    treeLevel++;
+    if (treeLevel == 0) {
+        // Set the color red and add the black leaves
+        n->setColor(RED);
+        n->setRight(&leaf);
+        n->setLeft(&leaf);
+    }
     if ( root != 0 ) {
         int nValue = n->getValue();
         int rValue = root->getValue();
@@ -81,27 +88,29 @@ void insert(node* n, node* root=0) {
             node* left = root->getLeft();
             if ( left == 0 || *left == leaf) { 
                 root->setLeft(n); 
+                insert_case1(n);
             }
-            else { insert(n, left); } 
+            else { 
+                insert(n, left); 
+            } 
         }
         else if ( nValue > rValue) {
             node* right = root->getRight();
             if ( right == 0 || *right == leaf) { 
                 root->setRight(n);
+                insert_case1(n);
             }
-            else { insert(n, right); }
+            else { 
+                insert(n, right); 
+            }
         }
         else {
             // No duplicates allowed
             return; 
         }
     }
-    n->setColor(RED);
-    // Add the black leaves
-    n->setRight(&leaf);
-    n->setLeft(&leaf);
-    // Now perform the Red-Black operations
-    insert_case1(n);
+    else { insert_case1(n);}
+    treeLevel--;
 }
 
 void insert_case1(node* n) {
@@ -149,14 +158,7 @@ void insert_case4(node* n) {
     node* grandparent = n->getGrandparent();
     node* parent = n->getParent();
     if ((n == parent->getRight()) && (parent == grandparent->getLeft())) {
-    //     cout << "Rotating left." << endl;
-    //     cout << "n <" <<n<<"> value="<<n->getValue()<<endl;
-    //     cout << "parent <" <<parent<<"> value="<<parent->getValue()<<endl;
-    //     cout << "left <" << n->getLeft() << "> value="<<n->getLeft()->getValue()<<endl;
         rotate_left(parent);
-        cout << "Done rotating." << endl;
-        cout << "n      <" <<n<<"> value="<<n->getValue()<<endl;
-        cout << "left   <" << n->getLeft() << "> value="<<n->getLeft()->getValue()<<endl;
         //insert_case5(n->getLeft());
     }
     else if ((n == parent->getLeft()) && (parent == grandparent->getRight())) {
@@ -229,21 +231,18 @@ int main() {
 
     node node18(18);
     insert(&node18, &root);
-    // assert(node10.getColor() == RED);
-    // assert(node10.getLeft() == &leaf);
-    // assert(node10.getRight() == &leaf);
-    // assert(node25.getColor() == BLACK);
-    // assert(node25.getLeft() == &node18);
-    // assert(node25.getRight() == &leaf);
-    // assert(root.getColor() == BLACK);
-    // assert(root.getLeft() == &node25);
-    // assert(root.getRight() == &node100);
-    // assert(node100.getColor() == BLACK);
-    // assert(node100.getLeft() == &leaf);
-    // assert(node100.getRight() == &leaf);
-    cout << "About to assert" << endl;
-    cout << "n      <" <<&node18<<"> value="<<(&node18)->getValue()<<endl;
-    cout << "left   <" << (&node18)->getLeft() << "> value="<<(&node18)->getLeft()->getValue()<<endl;
+    assert(node10.getColor() == RED);
+    assert(node10.getLeft() == &leaf);
+    assert(node10.getRight() == &leaf);
+    assert(node25.getColor() == BLACK);
+    assert(node25.getLeft() == &node18);
+    assert(node25.getRight() == &leaf);
+    assert(root.getColor() == BLACK);
+    assert(root.getLeft() == &node25);
+    assert(root.getRight() == &node100);
+    assert(node100.getColor() == BLACK);
+    assert(node100.getLeft() == &leaf);
+    assert(node100.getRight() == &leaf);
     assert(node18.getColor() == RED);
     assert(node18.getLeft() == &node10);
     assert(node18.getRight() == &leaf);

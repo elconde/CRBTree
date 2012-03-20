@@ -44,3 +44,4 @@ void insert_case5(node* n);
 void rotate_left(node*);
 void rotate_right(node*);
 
+int treeLevel = -1; 
