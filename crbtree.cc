@@ -73,14 +73,7 @@ void rotate_left(node* p) {
 
 void rotate_right(node* p) {}
 
-void insert(node* n, node* root=0) {
-    treeLevel++;
-    if (treeLevel == 0) {
-        // Set the color red and add the black leaves
-        n->setColor(RED);
-        n->setRight(&leaf);
-        n->setLeft(&leaf);
-    }
+void BTreeInsert(node* n, node* root) {
     if ( root != 0 ) {
         int nValue = n->getValue();
         int rValue = root->getValue();
@@ -88,20 +81,18 @@ void insert(node* n, node* root=0) {
             node* left = root->getLeft();
             if ( left == 0 || *left == leaf) { 
                 root->setLeft(n); 
-                insert_case1(n);
             }
             else { 
-                insert(n, left); 
+                BTreeInsert(n, left); 
             } 
         }
         else if ( nValue > rValue) {
             node* right = root->getRight();
             if ( right == 0 || *right == leaf) { 
                 root->setRight(n);
-                insert_case1(n);
             }
             else { 
-                insert(n, right); 
+                BTreeInsert(n, right); 
             }
         }
         else {
@@ -109,8 +100,14 @@ void insert(node* n, node* root=0) {
             return; 
         }
     }
-    else { insert_case1(n);}
-    treeLevel--;
+}
+
+void insert(node* n, node* root=0) {
+    n->setColor(RED);
+    n->setRight(&leaf);
+    n->setLeft(&leaf);
+    BTreeInsert(n, root);
+    insert_case1(n);
 }
 
 void insert_case1(node* n) {

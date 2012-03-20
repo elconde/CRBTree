@@ -34,6 +34,7 @@ class node {
 node leaf(0, BLACK);
 
 // http://en.wikipedia.org/w/index.php?title=Red%E2%80%93black_tree&oldid=482155076#Operations
+void BTInsert(node* n, node* root);
 void insert(node* n, node* root);
 void insert_case1(node* n);
 void insert_case2(node* n);
@@ -44,4 +45,3 @@ void insert_case5(node* n);
 void rotate_left(node*);
 void rotate_right(node*);
 
-int treeLevel = -1; 
