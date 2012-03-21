@@ -7,7 +7,6 @@ class node {
     node* left;
     node* right;
     public:
-    //TODO: Better organize these
         node(int, COLOR);
 
         COLOR getColor();
