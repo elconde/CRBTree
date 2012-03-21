@@ -63,20 +63,30 @@ node* node::getParent() {
     return parent;
 }
 
-void rotate_left(node* p) {
+void rotate_left(node* p) { // TODO: need the case where p is root
     node* g = p->getParent();
     node* n = p->getRight();
-    g->setLeft(n);
+    if ( g->getLeft() == p ) {
+        g->setLeft(n);
+    }
+    else {
+        g->setRight(n);
+    }
     p->setRight(n->getLeft());
     n->setLeft(p);
 }
 
-void rotate_right(node* n) {
-    node* g = n->getParent();
-    node* p = n->getLeft();
-    g->setRight(p);
-    n->setLeft(p->getRight());
-    p->setRight(n);
+void rotate_right(node* p) { // TODO: need the case where p is root
+    node* g = p->getParent();
+    node* n = p->getLeft();
+    if ( g->getLeft() == p ) {
+        g->setLeft(n);
+    }
+    else {
+        g->setRight(n);
+    }
+    p->setLeft(n->getRight());
+    n->setRight(p);
 }
 
 void BTreeInsert(node* n, node* root) {
@@ -180,15 +190,14 @@ void insert_case4(node* n) {
 void insert_case5(node* n) {
     node* grandparent = n->getGrandparent();
     node* parent = n->getParent();
-    parent->setColor(BLACK);
-    grandparent->setColor(RED);
     if (n == parent->getLeft()) {
         rotate_right(grandparent);
     }
     else {
         rotate_left(grandparent);
     }
-
+    parent->setColor(BLACK);
+    grandparent->setColor(RED);
 }
 
 const char* node::getColorString() {
