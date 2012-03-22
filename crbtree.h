@@ -26,6 +26,7 @@ class node {
         void setRight(node*);
 
         node* getParent();
+        void detach();
 
         bool operator==(const node&);
 };

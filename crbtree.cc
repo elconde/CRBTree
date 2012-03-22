@@ -63,10 +63,18 @@ node* node::getParent() {
     return parent;
 }
 
-void rotate_left(node* p) { // TODO: need the case where p is root
+void node::detach() {
+    // Make this node a root node
+    parent = 0;
+}
+
+void rotate_left(node* p) {
     node* g = p->getParent();
     node* n = p->getRight();
-    if ( g->getLeft() == p ) {
+    if ( g == 0 ) {
+        n->detach();
+    }
+    else if ( g->getLeft() == p ) {
         g->setLeft(n);
     }
     else {
@@ -76,10 +84,13 @@ void rotate_left(node* p) { // TODO: need the case where p is root
     n->setLeft(p);
 }
 
-void rotate_right(node* p) { // TODO: need the case where p is root
+void rotate_right(node* p) { // TODO: merge with rotate_left
     node* g = p->getParent();
     node* n = p->getLeft();
-    if ( g->getLeft() == p ) {
+    if ( g == 0 ) {
+        n->detach();
+    }
+    else if ( g->getLeft() == p ) {
         g->setLeft(n);
     }
     else {
