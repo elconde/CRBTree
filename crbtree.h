@@ -29,6 +29,8 @@ class node {
         void detach();
 
         bool operator==(const node&);
+
+        bool isRoot();
 };
 
 node leaf(0, BLACK);
