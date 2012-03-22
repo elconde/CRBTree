@@ -134,6 +134,13 @@ void BTreeInsert(node* n, node* root) {
 }
 
 void insert(node* n, node* root=0) {
+    // Insert the node into the tree. If the wrong root is supplied we'll
+    // climb up the tree to find the correct one.
+    if ( ( ! root == 0 ) && ( ! root->isRoot() ) ) {
+        insert(n, root->getParent()); 
+        return;
+    }
+
     n->setColor(RED);
     n->setRight(&leaf);
     n->setLeft(&leaf);
