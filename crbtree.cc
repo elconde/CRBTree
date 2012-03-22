@@ -15,7 +15,6 @@ bool node::isRoot() {
 }
 
 bool node::operator==(const node &anotherNode) {
-    // TODO: Need unit test for this function
     return anotherNode.value==value;
 }
 
@@ -467,5 +466,10 @@ int main() {
     node nnode59(59);
     insert(&nnode59,&nnode25);
     assert(nnode53.getParent() == 0 );
+
+
+    node anode(1);
+    node bnode(1);
+    assert(anode==bnode);
 }
 
