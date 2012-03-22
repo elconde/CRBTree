@@ -414,33 +414,58 @@ int main() {
     assert(nnode97.getColor()==RED);
     assert(nnode97.getLeft() == &leaf );
     assert(nnode97.getRight() == &leaf );
+    node nnode43(43);
+    insert(&nnode43,&nnode25);
+    assert(nnode25.getColor()==RED);
+    assert(nnode25.getLeft() == &leaf );
+    assert(nnode25.getRight() == &leaf );
+    assert(nnode53.getColor()==BLACK);
+    assert(nnode53.getLeft() == &nnode36 );
+    assert(nnode53.getRight() == &nnode98 );
+    assert(nnode98.getColor()==BLACK);
+    assert(nnode98.getLeft() == &nnode97 );
+    assert(nnode98.getRight() == &leaf );
+    assert(nnode36.getColor()==BLACK);
+    assert(nnode36.getLeft() == &nnode25 );
+    assert(nnode36.getRight() == &nnode43 );
+    assert(nnode97.getColor()==RED);
+    assert(nnode97.getLeft() == &leaf );
+    assert(nnode97.getRight() == &leaf );
+    assert(nnode43.getColor()==RED);
+    assert(nnode43.getLeft() == &leaf );
+    assert(nnode43.getRight() == &leaf );
+    node nnode32(32);
+    insert(&nnode32,&nnode25);
+    assert(nnode25.getColor()==BLACK);
+    assert(nnode25.getLeft() == &leaf );
+    assert(nnode25.getRight() == &nnode32 );
+    assert(nnode53.getColor()==BLACK);
+    assert(nnode53.getLeft() == &nnode36 );
+    assert(nnode53.getRight() == &nnode98 );
+    assert(nnode98.getColor()==BLACK);
+    assert(nnode98.getLeft() == &nnode97 );
+    assert(nnode98.getRight() == &leaf );
+    assert(nnode36.getColor()==RED);
+    assert(nnode36.getLeft() == &nnode25 );
+    assert(nnode36.getRight() == &nnode43 );
+    assert(nnode97.getColor()==RED);
+    assert(nnode97.getLeft() == &leaf );
+    assert(nnode97.getRight() == &leaf );
+    assert(nnode43.getColor()==BLACK);
+    assert(nnode43.getLeft() == &leaf );
+    assert(nnode43.getRight() == &leaf );
+    assert(nnode32.getColor()==RED);
+    assert(nnode32.getLeft() == &leaf );
+    assert(nnode32.getRight() == &leaf );
 
-
-
-
-
-
-    // node node97(97);
-    // insert(&node97,&rootA);
-    // assert(node53.getParent() == 0 );
-    // node node43(43);
-    // insert(&node43,&rootA);
-    // assert(node53.getParent() == 0 );
-    // node node32(32);
-    // insert(&node32,&rootA);
-    // assert(node53.getParent() == 0 );
-    // node node52(52);
-    // insert(&node52,&rootA);
-    // assert(node53.getParent() == 0 );
-    // node node35(35);
-    // insert(&node35,&rootA);
-    // assert(node53.getParent() == 0 );
-    // node node59(59);
-    // insert(&node59,&rootA);
-
-    // assert(node53.getParent() == 0 );
-
-
-
+    node nnode52(52);
+    insert(&nnode52,&nnode25);
+    assert(nnode53.getParent() == 0 );
+    node nnode35(35);
+    insert(&nnode35,&nnode25);
+    assert(nnode53.getParent() == 0 );
+    node nnode59(59);
+    insert(&nnode59,&nnode25);
+    assert(nnode53.getParent() == 0 );
 }
 
