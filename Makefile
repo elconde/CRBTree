@@ -1,4 +1,4 @@
 CC=g++
 
 all: crbtree.cc
-	g++ crbtree.cc -o crbtree
+	g++ -g crbtree.cc -o crbtree
