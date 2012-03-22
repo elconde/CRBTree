@@ -101,31 +101,30 @@ void rotate_right(node* p) { // TODO: merge with rotate_left
 }
 
 void BTreeInsert(node* n, node* root) {
-    if ( root != 0 ) {
-        int nValue = n->getValue();
-        int rValue = root->getValue();
-        if ( nValue < rValue) {
-            node* left = root->getLeft();
-            if ( left == 0 || *left == leaf) { 
-                root->setLeft(n); 
-            }
-            else { 
-                BTreeInsert(n, left); 
-            } 
+    if ( root == 0 ) { return; }
+    int nValue = n->getValue();
+    int rValue = root->getValue();
+    if ( nValue < rValue) {
+        node* left = root->getLeft();
+        if ( left == 0 || *left == leaf) { 
+            root->setLeft(n); 
         }
-        else if ( nValue > rValue) {
-            node* right = root->getRight();
-            if ( right == 0 || *right == leaf) { 
-                root->setRight(n);
-            }
-            else { 
-                BTreeInsert(n, right); 
-            }
+        else { 
+            BTreeInsert(n, left); 
+        } 
+    }
+    else if ( nValue > rValue) {
+        node* right = root->getRight();
+        if ( right == 0 || *right == leaf) { 
+            root->setRight(n);
         }
-        else {
-            // No duplicates allowed
-            return; 
+        else { 
+            BTreeInsert(n, right); 
         }
+    }
+    else {
+        // No duplicates allowed
+        return; 
     }
 }
 
