@@ -12,7 +12,6 @@ class node {
 
         COLOR getColor();
         void setColor(COLOR);
-        const char* getColorString();
 
         int getValue();
 

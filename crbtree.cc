@@ -225,25 +225,6 @@ void insert_case5(node* n) {
     grandparent->setColor(RED);
 }
 
-const char* node::getColorString() {
-    switch (color) {
-        case RED:
-            return "RED";
-            break;
-        case BLACK:
-            return "BLACK";
-            break;
-        case NONE:
-            return "NONE";
-            break;
-        default:
-            return "WTF?";
-    }
-
-}
-
-
-
 int main() {
     node root(50);
     assert(root.getColor() == NONE);
