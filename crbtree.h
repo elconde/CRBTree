@@ -1,3 +1,4 @@
+enum LR { LEFT, RIGHT };
 enum COLOR { RED, BLACK, NONE };
 
 class node {
@@ -18,6 +19,9 @@ class node {
         node* getGrandparent();
 
         node* getUncle();
+
+        node* get(LR);
+        void set(node*,LR);
 
         node* getLeft();
         void setLeft(node*);
@@ -44,6 +48,5 @@ void insert_case3(node* n);
 void insert_case4(node* n);
 void insert_case5(node* n);
 
-void rotate_left(node*);
-void rotate_right(node*);
+void rotate(node*,LR);
 

@@ -10,6 +10,14 @@ node::node(int v, COLOR c=NONE) {
     color = c;
 }
 
+node* node::get(LR lr) {
+    if ( lr == LEFT ) {
+        return getLeft();
+    }
+
+    return getRight();
+}
+
 bool node::isRoot() {
     return  parent == 0 ;
 }
@@ -51,6 +59,15 @@ node* node::getUncle() {
     return g->getLeft();
 }
 
+void node::set(node* n,LR lr) {
+    if ( lr == LEFT ) {
+        setLeft(n);
+    }
+    else {
+        setRight(n);
+    }
+}
+
 void node::setLeft(node* n) {
     left = n;
     n->parent = this;
@@ -72,9 +89,12 @@ void node::detach() {
     parent = 0;
 }
 
-void rotate_left(node* p) {
+void rotate(node* p, LR lr) {
+    LR rl;
+    if ( lr == LEFT ) { rl = RIGHT; }
+    else { rl = LEFT; }
     node* g = p->getParent();
-    node* n = p->getRight();
+    node* n = p->get(rl);
     if ( g == 0 ) {
         n->detach();
     }
@@ -84,24 +104,8 @@ void rotate_left(node* p) {
     else {
         g->setRight(n);
     }
-    p->setRight(n->getLeft());
-    n->setLeft(p);
-}
-
-void rotate_right(node* p) { // TODO: merge with rotate_left
-    node* g = p->getParent();
-    node* n = p->getLeft();
-    if ( g == 0 ) {
-        n->detach();
-    }
-    else if ( g->getLeft() == p ) {
-        g->setLeft(n);
-    }
-    else {
-        g->setRight(n);
-    }
-    p->setLeft(n->getRight());
-    n->setRight(p);
+    p->set(n->get(lr),rl);
+    n->set(p,lr);
 }
 
 void BTreeInsert(node* n, node* root) {
@@ -192,11 +196,11 @@ void insert_case4(node* n) {
     node* grandparent = n->getGrandparent();
     node* parent = n->getParent();
     if ((n == parent->getRight()) && (parent == grandparent->getLeft())) {
-        rotate_left(parent);
+        rotate(parent,LEFT);
         insert_case5(n->getLeft());
     }
     else if ((n == parent->getLeft()) && (parent == grandparent->getRight())) {
-        rotate_right(parent);
+        rotate(parent,RIGHT);
         insert_case5(n->getRight());
     }
     else {
@@ -212,10 +216,10 @@ void insert_case5(node* n) {
     node* grandparent = n->getGrandparent();
     node* parent = n->getParent();
     if (n == parent->getLeft()) {
-        rotate_right(grandparent);
+        rotate(grandparent,RIGHT);
     }
     else {
-        rotate_left(grandparent);
+        rotate(grandparent,LEFT);
     }
     parent->setColor(BLACK);
     grandparent->setColor(RED);
